@@ -15,17 +15,13 @@ export interface Model {
 
 export const AVAILABLE_MODELS: Model[] = [
   { provider: 'openai', name: 'gpt-4o', displayName: 'GPT-4o' },
-  { provider: 'openai', name: 'gpt-4o-mini', displayName: 'GPT-4o Mini' },
-  { provider: 'openai', name: 'gpt-3.5-turbo', displayName: 'GPT-3.5 Turbo' },
+  { provider: 'openai', name: 'gpt-4o-mini', displayName: 'GPT-4o mini' },
+  { provider: 'openai', name: 'gpt-5', displayName: 'GPT-5' },
+  { provider: 'openai', name: 'gpt-5-mini', displayName: 'GPT-5 mini' },
   {
     provider: 'anthropic',
-    name: 'claude-3-5-sonnet-20241022',
-    displayName: 'Claude 3.5 Sonnet',
-  },
-  {
-    provider: 'anthropic',
-    name: 'claude-3-5-haiku-20241022',
-    displayName: 'Claude 3.5 Haiku',
+    name: 'claude-sonnet-4-20250514',
+    displayName: 'Claude 4 Sonnet',
   },
 ];
 
@@ -41,12 +37,6 @@ export const AVAILABLE_TOOLS: Tool[] = [
     name: 'web_search',
     displayName: 'Web Search',
     description: 'Search the web for current information',
-    enabled: false,
-  },
-  {
-    name: 'function_calling',
-    displayName: 'Function Calling',
-    description: 'Use structured function calls',
     enabled: false,
   },
 ];

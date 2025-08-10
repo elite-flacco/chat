@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 async function handleOpenAIRequest(
   messages: Message[],
   model: any,
-  _tools: any[]
+  tools: any[]
 ) {
   try {
     if (!openai) {
@@ -52,21 +52,49 @@ async function handleOpenAIRequest(
       );
     }
 
-    const openaiMessages = messages.map(msg => ({
+    // Convert messages to Responses API format
+    const responseInput = messages.map(msg => ({
       role: msg.role as 'user' | 'assistant',
       content: msg.content,
     }));
 
-    const response = await openai.chat.completions.create({
+    // Check if web search is enabled
+    const webSearchEnabled = tools.some(
+      tool => tool.name === 'web_search' && tool.enabled
+    );
+
+    // Prepare tools array for Responses API
+    const responseTools = webSearchEnabled
+      ? [{ type: 'web_search_preview' }]
+      : [];
+
+    // Always use Responses API
+    const response = await (openai as any).responses.create({
       model: model.name,
-      messages: openaiMessages,
-      temperature: 0.7,
+      tools: responseTools,
+      input: responseInput,
     });
+
+    // Extract content from response output
+    let content = 'No response';
+    if (response.output && response.output.length > 0) {
+      // Find the assistant message in the output
+      const assistantOutput = response.output.find(
+        (msg: any) => msg.role === 'assistant'
+      );
+      if (
+        assistantOutput &&
+        assistantOutput.content &&
+        assistantOutput.content.length > 0
+      ) {
+        content = assistantOutput.content[0]?.text || 'No response';
+      }
+    }
 
     const assistantMessage: Message = {
       id: Date.now().toString(),
       role: 'assistant',
-      content: response.choices[0]?.message?.content || 'No response',
+      content,
       timestamp: new Date(),
     };
 

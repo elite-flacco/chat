@@ -43,8 +43,10 @@ This is a Next.js-based AI chatbot that supports multiple providers:
 
 **AI Provider Integration:**
 
-- OpenAI integration supports GPT-4o, GPT-4o Mini, GPT-3.5 Turbo
-- Anthropic integration supports Claude 3.5 Sonnet, Claude 3.5 Haiku
+- OpenAI integration supports GPT-4o, GPT-4o Mini, GPT-5, GPT-5 mini
+- Anthropic integration supports Claude 4 Sonnet
+- OpenAI uses the Responses API with optional web search tool support
+- Anthropic uses the Messages API with standard text generation
 - API clients are conditionally initialized based on environment variables
 - Graceful error handling when API keys are missing
 
@@ -90,4 +92,21 @@ The `/api/chat` route demonstrates the pattern for handling multiple AI provider
 - App-level state in `page.tsx` manages selected model and enabled tools
 - Chat component maintains message history and handles API communication
 - Model/tool selectors update parent state via callbacks
+- Web search tool is automatically disabled when switching away from OpenAI models
 - All state changes trigger re-renders and API calls as needed
+
+### Tool System
+
+- Currently supports web search tool (OpenAI only)
+- Tool definitions in `src/types/chat.ts` include name, display name, description, and enabled state
+- Tools are passed to API routes and conditionally used based on provider capabilities
+- Future tool additions should follow the same pattern with provider-specific implementations
+
+## Important Implementation Details
+
+- OpenAI integration uses the newer Responses API format with `input`/`output` structure
+- Anthropic messages are filtered to only include `user` and `assistant` roles
+- Message timestamps are handled as both `Date` objects and strings for serialization
+- Auto-scrolling to bottom of chat on new messages using `useRef` and `useEffect`
+- Loading states with animated dots during API calls
+- Error handling displays errors as assistant messages in the chat

@@ -12,6 +12,19 @@ export default function Home() {
   );
   const [tools, setTools] = useState<Tool[]>(AVAILABLE_TOOLS);
 
+  const handleModelChange = (model: Model) => {
+    setSelectedModel(model);
+
+    // Disable web search if switching away from OpenAI
+    if (model.provider !== 'openai') {
+      setTools(prevTools =>
+        prevTools.map(tool =>
+          tool.name === 'web_search' ? { ...tool, enabled: false } : tool
+        )
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
@@ -33,18 +46,14 @@ export default function Home() {
 
               <ModelSelector
                 selectedModel={selectedModel}
-                onModelChange={setSelectedModel}
+                onModelChange={handleModelChange}
               />
 
-              <ToolSelector tools={tools} onToolChange={setTools} />
-
-              <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-md">
-                <p className="text-xs text-yellow-800 dark:text-yellow-200">
-                  <strong>Note:</strong> You need to set OPENAI_API_KEY and
-                  ANTHROPIC_API_KEY environment variables for the respective
-                  models to work.
-                </p>
-              </div>
+              <ToolSelector
+                tools={tools}
+                onToolChange={setTools}
+                selectedModel={selectedModel}
+              />
             </div>
           </aside>
 
