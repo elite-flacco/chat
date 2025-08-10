@@ -13,10 +13,7 @@ export default function ModelSelector({
 }: ModelSelectorProps) {
   return (
     <div className="mb-4">
-      <label
-        htmlFor="model-select"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-      >
+      <label htmlFor="model-select" className="label">
         AI Model
       </label>
       <select
@@ -31,7 +28,7 @@ export default function ModelSelector({
             onModelChange(model);
           }
         }}
-        className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="select"
       >
         {AVAILABLE_MODELS.map(model => (
           <option
@@ -43,7 +40,7 @@ export default function ModelSelector({
         ))}
       </select>
 
-      <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+      <div className="mt-2 text-xs text-muted-foreground">
         Provider: {selectedModel.provider}
       </div>
     </div>

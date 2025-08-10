@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Chat from '@/components/Chat';
 import ModelSelector from '@/components/ModelSelector';
 import ToolSelector from '@/components/ToolSelector';
+import ThemeToggle from '@/components/ThemeToggle';
 import { Model, Tool, AVAILABLE_MODELS, AVAILABLE_TOOLS } from '@/types/chat';
 
 export default function Home() {
@@ -26,39 +27,45 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            AI Chatbot
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Chat with different AI models and use various tools
-          </p>
+        <header className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              AI Chatbot
+            </h1>
+            <p className="text-muted-foreground">
+              Chat with different AI models and use various tools
+            </p>
+          </div>
+          <ThemeToggle />
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside className="lg:col-span-1 space-y-6">
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Settings
-              </h2>
+            <div className="card">
+              <div className="card-header">
+                <h2 className="text-lg font-semibold text-foreground">
+                  Settings
+                </h2>
+              </div>
+              <div className="card-body space-y-4">
+                <ModelSelector
+                  selectedModel={selectedModel}
+                  onModelChange={handleModelChange}
+                />
 
-              <ModelSelector
-                selectedModel={selectedModel}
-                onModelChange={handleModelChange}
-              />
-
-              <ToolSelector
-                tools={tools}
-                onToolChange={setTools}
-                selectedModel={selectedModel}
-              />
+                <ToolSelector
+                  tools={tools}
+                  onToolChange={setTools}
+                  selectedModel={selectedModel}
+                />
+              </div>
             </div>
           </aside>
 
           <main className="lg:col-span-3">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-[600px] flex flex-col">
+            <div className="card h-[600px] flex flex-col">
               <Chat selectedModel={selectedModel} enabledTools={tools} />
             </div>
           </main>

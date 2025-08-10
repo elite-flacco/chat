@@ -31,10 +31,8 @@ export default function ToolSelector({
   if (availableTools.length === 0) {
     return (
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Available Tools
-        </label>
-        <div className="text-sm text-gray-500 dark:text-gray-400">
+        <label className="label">Available Tools</label>
+        <div className="text-sm text-muted-foreground">
           No tools available for {selectedModel.displayName}
         </div>
       </div>
@@ -43,9 +41,7 @@ export default function ToolSelector({
 
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-        Available Tools
-      </label>
+      <label className="label">Available Tools</label>
       <div className="space-y-2">
         {availableTools.map(tool => (
           <div key={tool.name} className="flex items-start space-x-3">
@@ -54,16 +50,16 @@ export default function ToolSelector({
               id={tool.name}
               checked={tool.enabled}
               onChange={() => handleToolToggle(tool.name)}
-              className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="mt-1 h-4 w-4 rounded border-input text-primary focus:ring-ring"
             />
             <div className="flex-1">
               <label
                 htmlFor={tool.name}
-                className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
+                className="text-sm font-medium text-foreground cursor-pointer"
               >
                 {tool.displayName}
               </label>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-muted-foreground">
                 {tool.description}
               </p>
             </div>
@@ -72,7 +68,7 @@ export default function ToolSelector({
       </div>
 
       {availableTools.some(tool => tool.enabled) && (
-        <div className="mt-2 text-xs text-green-600 dark:text-green-400">
+        <div className="mt-2 text-xs text-accent">
           ✓ {availableTools.filter(tool => tool.enabled).length} tool(s) enabled
         </div>
       )}
