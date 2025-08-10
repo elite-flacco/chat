@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
-import { ChatRequest, Message } from '@/types/chat';
+import { ChatRequest, Message, Model, Tool } from '@/types/chat';
 
 const openai = process.env.OPENAI_API_KEY
   ? new OpenAI({
@@ -41,8 +41,8 @@ export async function POST(request: NextRequest) {
 
 async function handleOpenAIRequest(
   messages: Message[],
-  model: any,
-  tools: any[]
+  model: Model,
+  tools: Tool[]
 ) {
   try {
     if (!openai) {
@@ -65,11 +65,11 @@ async function handleOpenAIRequest(
 
     // Prepare tools array for Responses API
     const responseTools = webSearchEnabled
-      ? [{ type: 'web_search_preview' }]
+      ? [{ type: 'web_search_preview' as const }]
       : [];
 
     // Always use Responses API
-    const response = await (openai as any).responses.create({
+    const response = await (openai as OpenAI).responses.create({
       model: model.name,
       tools: responseTools,
       input: responseInput,
@@ -80,14 +80,20 @@ async function handleOpenAIRequest(
     if (response.output && response.output.length > 0) {
       // Find the assistant message in the output
       const assistantOutput = response.output.find(
-        (msg: any) => msg.role === 'assistant'
+        item => 'role' in item && item.role === 'assistant'
       );
       if (
         assistantOutput &&
+        'content' in assistantOutput &&
         assistantOutput.content &&
+        Array.isArray(assistantOutput.content) &&
         assistantOutput.content.length > 0
       ) {
-        content = assistantOutput.content[0]?.text || 'No response';
+        const firstContent = assistantOutput.content[0];
+        content =
+          firstContent && 'text' in firstContent
+            ? firstContent.text
+            : 'No response';
       }
     }
 
@@ -99,14 +105,21 @@ async function handleOpenAIRequest(
     };
 
     return NextResponse.json({ message: assistantMessage });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('OpenAI API error:', error);
 
     let errorMessage = 'OpenAI API error';
-    if (error?.error?.message) {
-      errorMessage = error.error.message;
-    } else if (error?.message) {
-      errorMessage = error.message;
+    if (error && typeof error === 'object') {
+      if (
+        'error' in error &&
+        error.error &&
+        typeof error.error === 'object' &&
+        'message' in error.error
+      ) {
+        errorMessage = String(error.error.message);
+      } else if ('message' in error) {
+        errorMessage = String(error.message);
+      }
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 500 });
@@ -115,8 +128,8 @@ async function handleOpenAIRequest(
 
 async function handleAnthropicRequest(
   messages: Message[],
-  model: any,
-  _tools: any[]
+  model: Model,
+  _tools: Tool[]
 ) {
   try {
     if (!anthropic) {
@@ -150,14 +163,21 @@ async function handleAnthropicRequest(
     };
 
     return NextResponse.json({ message: assistantMessage });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Anthropic API error:', error);
 
     let errorMessage = 'Anthropic API error';
-    if (error?.error?.message) {
-      errorMessage = error.error.message;
-    } else if (error?.message) {
-      errorMessage = error.message;
+    if (error && typeof error === 'object') {
+      if (
+        'error' in error &&
+        error.error &&
+        typeof error.error === 'object' &&
+        'message' in error.error
+      ) {
+        errorMessage = String(error.error.message);
+      } else if ('message' in error) {
+        errorMessage = String(error.message);
+      }
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 500 });
