@@ -6,9 +6,14 @@ import { Message, Model, Tool, ChatRequest } from '@/types/chat';
 interface ChatProps {
   selectedModel: Model;
   enabledTools: Tool[];
+  onClearChat?: () => void;
 }
 
-export default function Chat({ selectedModel, enabledTools }: ChatProps) {
+export default function Chat({
+  selectedModel,
+  enabledTools,
+  onClearChat,
+}: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +21,12 @@ export default function Chat({ selectedModel, enabledTools }: ChatProps) {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const clearMessages = () => {
+    setMessages([]);
+    setInput('');
+    onClearChat?.();
   };
 
   useEffect(() => {
@@ -92,6 +103,16 @@ export default function Chat({ selectedModel, enabledTools }: ChatProps) {
 
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        {messages.length > 0 && (
+          <button
+            onClick={clearMessages}
+            className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            New Chat
+          </button>
+        )}
+      </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
           <div className="text-center text-gray-500 mt-8">
