@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ============================================================
    1) Runtime Design Tokens (CSS variables)
@@ -52,10 +52,12 @@
     --radius-full: 9999px;
 
     /* Fonts (TODO: swap with brand fonts later) */
-    --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-      "Liberation Mono";
+    --font-sans:
+      ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+      'Noto Sans';
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-mono:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono';
   }
 
   .dark {
@@ -180,9 +182,9 @@
 
   /* Make native buttons clickable by default */
   button,
-  [type="button"],
-  [type="submit"],
-  [role="button"] {
+  [type='button'],
+  [type='submit'],
+  [role='button'] {
     @apply cursor-pointer;
   }
 }
