@@ -38,16 +38,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-6">
-        <header className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      <div className="container mx-auto px-4 py-4 sm:px-6 sm:py-6">
+        <header className="mb-4 sm:mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button
               onClick={toggleSettings}
-              className="btn btn-ghost btn-sm xl:hidden"
+              className="btn btn-ghost btn-sm xl:hidden min-w-[40px] min-h-[40px] p-2"
               title="Toggle settings"
             >
               <svg
-                className="w-5 h-5"
+                className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -61,20 +61,22 @@ export default function Home() {
               </svg>
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-1">Chat</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1">
+                Chat
+              </h1>
               <p className="text-muted-foreground text-sm hidden sm:block">
                 Chat with different AI models and use various tools
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={handleNewChat}
-              className="btn btn-outline btn-sm"
+              className="btn btn-outline btn-sm min-w-[40px] min-h-[40px] px-2 sm:px-3"
               title="Start a new conversation"
             >
               <svg
-                className="w-4 h-4"
+                className="w-5 h-5 sm:w-4 sm:h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -95,7 +97,7 @@ export default function Home() {
         {/* Mobile Settings Overlay */}
         {showSettings && (
           <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 xl:hidden">
-            <div className="fixed left-0 top-0 h-full w-80 max-w-[80vw] bg-background border-r border-border shadow-lg">
+            <div className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-background border-r border-border shadow-lg animate-in slide-in-from-left-full duration-200">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground">
                   Settings
@@ -136,7 +138,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 h-[calc(100vh-200px)]">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6 h-[calc(100vh-100px)] sm:h-[calc(100vh-180px)]">
           <aside className="hidden xl:block xl:col-span-1 space-y-6 xl:max-h-full xl:overflow-y-auto">
             <div className="card">
               <div className="card-header">

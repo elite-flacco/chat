@@ -111,7 +111,7 @@ export default function Chat({
   return (
     <div className="flex flex-col h-full">
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
         {messages.map(message => (
           <div
             key={message.id}
@@ -120,7 +120,7 @@ export default function Chat({
             }`}
           >
             <div
-              className={`max-w-[75%] px-4 py-3 rounded-2xl shadow-sm ${
+              className={`max-w-[85%] sm:max-w-[75%] px-3 py-2 sm:px-4 sm:py-3 rounded-2xl shadow-sm ${
                 message.role === 'user'
                   ? 'bg-primary text-primary-foreground rounded-br-md'
                   : 'bg-muted text-foreground rounded-bl-md border border-border'
@@ -162,7 +162,7 @@ export default function Chat({
       </div>
 
       {/* Input area */}
-      <div className="border-t border-border p-6">
+      <div className="border-t border-border p-4 sm:p-6">
         <div className="flex space-x-3 items-end">
           <textarea
             ref={textareaRef}
@@ -170,17 +170,18 @@ export default function Chat({
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message..."
-            className="textarea flex-1 min-h-[44px] overflow-hidden"
+            className="textarea flex-1 min-h-[44px] max-h-32 overflow-hidden text-base sm:text-sm"
             rows={1}
             disabled={isLoading}
           />
           <button
             onClick={sendMessage}
             disabled={!input.trim() || isLoading}
-            className="btn btn-primary px-6 shrink-0"
+            className="btn btn-primary px-4 sm:px-6 shrink-0 min-w-[44px] min-h-[44px]"
+            aria-label="Send message"
           >
             <svg
-              className="w-4 h-4"
+              className="w-5 h-5 sm:w-4 sm:h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
