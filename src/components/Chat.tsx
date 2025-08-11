@@ -120,7 +120,7 @@ export default function Chat({
             }`}
           >
             <div
-              className={`max-w-[85%] sm:max-w-[75%] px-3 py-2 sm:px-4 sm:py-3 rounded-2xl shadow-sm ${
+              className={`max-w-[85%] sm:max-w-[75%] px-3 py-1 sm:px-4 sm:py-2 rounded-xl shadow-sm ${
                 message.role === 'user'
                   ? 'bg-primary text-primary-foreground rounded-br-md'
                   : 'bg-muted text-foreground rounded-bl-md border border-border'
@@ -129,20 +129,13 @@ export default function Chat({
               <div className="whitespace-pre-wrap break-words leading-relaxed">
                 {message.content}
               </div>
-              <div
-                className={`text-xs mt-2 ${
-                  message.role === 'user' ? 'opacity-80' : 'opacity-60'
-                }`}
-              >
-                {formatTime(message.timestamp)}
-              </div>
             </div>
           </div>
         ))}
 
         {isLoading && (
           <div className="flex justify-start">
-            <div className="max-w-[75%] px-4 py-3 rounded-2xl rounded-bl-md bg-muted border border-border shadow-sm">
+            <div className="max-w-[75%] px-4 py-2 sm:px-4 sm:py-2 rounded-xl rounded-bl-md bg-muted border border-border shadow-sm">
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                 <div
