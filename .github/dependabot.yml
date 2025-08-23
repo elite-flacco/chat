@@ -5,8 +5,6 @@ updates:
     schedule:
       interval: 'weekly'
     open-pull-requests-limit: 10
-    reviewers:
-      - 'dependabot'
     assignees:
       - 'dependabot'
     commit-message:
@@ -15,8 +13,8 @@ updates:
     groups:
       react-core:
         patterns:
-          - "react"
-          - "react-dom"
+          - 'react'
+          - 'react-dom'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
