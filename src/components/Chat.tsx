@@ -54,11 +54,15 @@ export default function Chat({
     setInput('');
     setIsLoading(true);
 
+    // Prepare assistant message ID for streaming
+    const assistantMessageId = Date.now().toString() + '_assistant';
+
     try {
       const chatRequest: ChatRequest = {
         messages: [...messages, userMessage],
         model: selectedModel,
         tools: enabledTools.filter(tool => tool.enabled),
+        stream: selectedModel.provider === 'openai', // Only stream for OpenAI
       };
 
       const response = await fetch('/api/chat', {
@@ -73,13 +77,86 @@ export default function Chat({
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      if (
+        chatRequest.stream &&
+        response.headers.get('content-type')?.includes('text/event-stream')
+      ) {
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
 
-      if (data.error) {
-        throw new Error(data.error);
+        if (!reader) {
+          throw new Error('Failed to get response reader');
+        }
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6));
+
+                if (data.error) {
+                  throw new Error(data.error);
+                }
+
+                if (data.content) {
+                  // Hide loading indicator once streaming starts
+                  setIsLoading(false);
+
+                  // Create or update the assistant message
+                  setMessages(prev => {
+                    const existingMessage = prev.find(
+                      msg => msg.id === assistantMessageId
+                    );
+                    if (existingMessage) {
+                      // Update existing message
+                      return prev.map(msg =>
+                        msg.id === assistantMessageId
+                          ? { ...msg, content: msg.content + data.content }
+                          : msg
+                      );
+                    } else {
+                      // Create new assistant message
+                      const assistantMessage: Message = {
+                        id: assistantMessageId,
+                        role: 'assistant',
+                        content: data.content,
+                        timestamp: new Date(),
+                      };
+                      return [...prev, assistantMessage];
+                    }
+                  });
+                }
+
+                if (data.done) {
+                  break;
+                }
+              } catch (parseError) {
+                // Ignore parse errors for partial chunks
+                console.warn('Failed to parse streaming chunk:', parseError);
+              }
+            }
+          }
+        }
+      } else {
+        // Handle non-streaming response
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        // Replace the placeholder message with the actual response
+        setMessages(prev =>
+          prev.map(msg => (msg.id === assistantMessageId ? data.message : msg))
+        );
       }
-
-      setMessages(prev => [...prev, data.message]);
     } catch (error) {
       const errorMessage: Message = {
         id: Date.now().toString(),
@@ -87,7 +164,11 @@ export default function Chat({
         content: `Error: ${error instanceof Error ? error.message : 'Something went wrong'}`,
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+
+      // Replace the placeholder message with error message
+      setMessages(prev =>
+        prev.map(msg => (msg.id === assistantMessageId ? errorMessage : msg))
+      );
     } finally {
       setIsLoading(false);
     }
