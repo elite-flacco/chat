@@ -1,0 +1,12 @@
+# .github/workflows/auto-merge-dependabot.yml
+name: Auto-merge Dependabot
+on: pull_request
+
+jobs:
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          github-token: ${{ secrets.DEPENDABOT_MERGE_TOKEN }}
