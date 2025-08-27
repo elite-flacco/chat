@@ -18,10 +18,10 @@ const anthropic = process.env.ANTHROPIC_API_KEY
 export async function POST(request: NextRequest) {
   try {
     const body: ChatRequest = await request.json();
-    const { messages, model, tools } = body;
+    const { messages, model, tools, stream = false } = body;
 
     if (model.provider === 'openai') {
-      return await handleOpenAIRequest(messages, model, tools);
+      return await handleOpenAIRequest(messages, model, tools, stream);
     } else if (model.provider === 'anthropic') {
       return await handleAnthropicRequest(messages, model, tools);
     }
@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
 async function handleOpenAIRequest(
   messages: Message[],
   model: Model,
-  tools: Tool[]
+  tools: Tool[],
+  stream: boolean = false
 ) {
   try {
     if (!openai) {
@@ -68,34 +69,73 @@ async function handleOpenAIRequest(
       ? [{ type: 'web_search_preview' as const }]
       : [];
 
-    // Always use Responses API
-    const response = await (openai as OpenAI).responses.create({
+    // Configure request parameters
+    const requestConfig: any = {
       model: model.name,
-      tools: responseTools,
       input: responseInput,
-    });
+      max_output_tokens: 4000,
+      stream,
+    };
 
-    // Extract content from response output
-    let content = 'No response';
-    if (response.output && response.output.length > 0) {
-      // Find the assistant message in the output
-      const assistantOutput = response.output.find(
-        item => 'role' in item && item.role === 'assistant'
-      );
-      if (
-        assistantOutput &&
-        'content' in assistantOutput &&
-        assistantOutput.content &&
-        Array.isArray(assistantOutput.content) &&
-        assistantOutput.content.length > 0
-      ) {
-        const firstContent = assistantOutput.content[0];
-        content =
-          firstContent && 'text' in firstContent
-            ? firstContent.text
-            : 'No response';
-      }
+    if (responseTools.length > 0) {
+      requestConfig.tools = responseTools;
     }
+
+    // Add GPT-5 specific parameters
+    if (model.name.startsWith('gpt-5')) {
+      Object.assign(requestConfig, {
+        reasoning: {
+          effort: 'medium',
+        },
+      });
+    }
+
+    if (stream) {
+      // Handle streaming response
+      const stream = await (openai as OpenAI).responses.stream(requestConfig);
+
+      const encoder = new TextEncoder();
+      const readable = new ReadableStream({
+        async start(controller) {
+          try {
+            for await (const event of stream) {
+              if (event.type === 'response.output_text.delta') {
+                const chunk = `data: ${JSON.stringify({ content: event.delta })}\n\n`;
+                controller.enqueue(encoder.encode(chunk));
+              } else if (event.type === 'response.completed') {
+                const chunk = `data: ${JSON.stringify({ done: true })}\n\n`;
+                controller.enqueue(encoder.encode(chunk));
+                controller.close();
+                break;
+              } else if (event.type === 'error') {
+                const chunk = `data: ${JSON.stringify({ error: (event as any).error })}\n\n`;
+                controller.enqueue(encoder.encode(chunk));
+                controller.close();
+                break;
+              }
+            }
+          } catch {
+            const chunk = `data: ${JSON.stringify({ error: 'Stream error' })}\n\n`;
+            controller.enqueue(encoder.encode(chunk));
+            controller.close();
+          }
+        },
+      });
+
+      return new NextResponse(readable, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+        },
+      });
+    }
+
+    // Non-streaming response
+    const response = await (openai as OpenAI).responses.create(requestConfig);
+
+    // Extract content using the recommended approach
+    const content = (response as any).output_text || 'No response';
 
     const assistantMessage: Message = {
       id: Date.now().toString(),
@@ -109,7 +149,23 @@ async function handleOpenAIRequest(
     console.error('OpenAI API error:', error);
 
     let errorMessage = 'OpenAI API error';
+    let statusCode = 500;
+
     if (error && typeof error === 'object') {
+      // Handle OpenAI SDK specific errors
+      if ('status' in error) {
+        statusCode = error.status as number;
+        if (statusCode === 401) {
+          errorMessage = 'Invalid OpenAI API key';
+        } else if (statusCode === 429) {
+          errorMessage =
+            'OpenAI API rate limit exceeded. Please try again later.';
+        } else if (statusCode === 500) {
+          errorMessage = 'OpenAI API server error. Please try again.';
+        }
+      }
+
+      // Extract error message
       if (
         'error' in error &&
         error.error &&
@@ -122,7 +178,7 @@ async function handleOpenAIRequest(
       }
     }
 
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json({ error: errorMessage }, { status: statusCode });
   }
 }
 

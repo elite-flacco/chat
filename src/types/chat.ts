@@ -45,6 +45,7 @@ export interface ChatRequest {
   messages: Message[];
   model: Model;
   tools: Tool[];
+  stream?: boolean;
 }
 
 export interface ChatResponse {
