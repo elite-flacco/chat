@@ -14,14 +14,15 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 - 🧠 **Model Selection** - GPT-4o, GPT-4o Mini, GPT-5, GPT-5 Mini, Claude 4 Sonnet
 - 🔍 **Web Search Tool** - Optional web search capabilities (OpenAI models)
 - 💬 **Real-time Chat** - Streaming responses with message history
+- 🌙 **Dark Mode** - Toggle between light and dark themes with system preference detection
 - ⚙️ **Graceful Fallbacks** - Functions without API keys with helpful error messages
 
 ### Technical Stack
 
-- ⚡ **Next.js 15** with App Router
+- ⚡ **Next.js 15.5** with App Router
 - ⚛️ **React 19.1** with modern features
 - 🎯 **TypeScript** with strict configuration
-- 🎨 **Tailwind CSS** for styling
+- 🎨 **Tailwind CSS v4** for styling
 - 🧪 **Jest** and **React Testing Library** for testing
 - 📏 **ESLint** and **Prettier** for code quality
 - 🔄 **GitHub Actions** CI/CD pipeline
@@ -122,6 +123,7 @@ npm run test:coverage
 │   ├── components/    # React components
 │   │   ├── Chat.tsx
 │   │   ├── ModelSelector.tsx
+│   │   ├── ThemeToggle.tsx
 │   │   └── ToolSelector.tsx
 │   ├── types/         # TypeScript definitions
 │   │   └── chat.ts
