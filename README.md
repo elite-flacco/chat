@@ -14,6 +14,7 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 - 🧠 **Model Selection** - GPT-4o, GPT-4o Mini, GPT-5, GPT-5 Mini, Claude 4 Sonnet
 - 🔍 **Web Search Tool** - Optional web search capabilities (OpenAI models)
 - 💬 **Real-time Chat** - Streaming responses with message history
+- 🌙 **Theme Toggle** - Dark/light mode with system preference detection
 - ⚙️ **Graceful Fallbacks** - Functions without API keys with helpful error messages
 
 ### Technical Stack
@@ -21,12 +22,13 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 - ⚡ **Next.js 15** with App Router
 - ⚛️ **React 19.1** with modern features
 - 🎯 **TypeScript** with strict configuration
-- 🎨 **Tailwind CSS** for styling
+- 🎨 **Tailwind CSS** for styling with dark mode support
 - 🧪 **Jest** and **React Testing Library** for testing
 - 📏 **ESLint** and **Prettier** for code quality
-- 🔄 **GitHub Actions** CI/CD pipeline
+- 🔄 **GitHub Actions** CI/CD pipeline with comprehensive automation
 - 🎣 **Husky** pre-commit hooks
 - 📦 **Automatic dependency updates** with Dependabot
+- 🤖 **Claude Code Integration** - AI-powered code assistance and automation
 
 ## 📋 Prerequisites
 
@@ -77,8 +79,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to start c
 
 1. **Select a Model** - Choose from available AI models (OpenAI or Anthropic)
 2. **Enable Tools** - Optionally enable web search for OpenAI models
-3. **Start Chatting** - Type your message and get AI responses
-4. **View History** - All messages are preserved in your chat session
+3. **Toggle Theme** - Switch between light and dark modes with the theme toggle
+4. **Start Chatting** - Type your message and get AI responses
+5. **View History** - All messages are preserved in your chat session
 
 ## 📜 Available Scripts
 
@@ -112,29 +115,40 @@ npm run test:coverage
 ## 📁 Project Structure
 
 ```
-├── .github/           # GitHub workflows and dependabot config
+├── .claude/           # Claude Code commands and automation
+│   └── commands/      # Custom Claude commands
+├── .github/           # GitHub workflows and automation
+│   └── workflows/     # CI/CD pipelines and bot automation
+├── .husky/            # Git hooks configuration
 ├── .next/             # Next.js build output
 ├── public/            # Static assets
 ├── src/
 │   ├── app/           # Next.js app directory
 │   │   ├── api/chat/  # Chat API route
+│   │   ├── layout.tsx # Root layout with theme support
 │   │   └── page.tsx   # Main chat interface
 │   ├── components/    # React components
 │   │   ├── Chat.tsx
 │   │   ├── ModelSelector.tsx
+│   │   ├── ThemeToggle.tsx
 │   │   └── ToolSelector.tsx
+│   ├── styles/        # Global styles
 │   ├── types/         # TypeScript definitions
 │   │   └── chat.ts
 │   └── __tests__/     # Test files
 ├── .editorconfig      # Editor configuration
 ├── .env.example       # Environment variables template
+├── .prettierignore    # Prettier ignore patterns
+├── .prettierrc        # Prettier configuration
 ├── CLAUDE.md          # Claude Code project instructions
+├── CONTRIBUTING.md    # Contributing guidelines
 ├── eslint.config.mjs  # ESLint configuration
 ├── .gitignore         # Git ignore rules
-├── .prettierrc        # Prettier configuration
 ├── jest.config.js     # Jest configuration
+├── jest.setup.js      # Jest setup configuration
 ├── next.config.ts     # Next.js configuration
 ├── package.json       # Dependencies and scripts
+├── postcss.config.mjs # PostCSS configuration
 ├── tailwind.config.ts # Tailwind CSS configuration
 └── tsconfig.json      # TypeScript configuration
 ```
@@ -181,6 +195,24 @@ npm run build
 npm start
 ```
 
+## 🤖 AI-Powered Development
+
+### Claude Code Integration
+
+This project includes comprehensive Claude Code automation:
+
+- **AI Assistant Workflow** - Responds to `@claude` mentions in issues and PRs
+- **Auto-Review** - Automatic PR reviews with AI-powered feedback
+- **Weekly Automation** - Automated changelog and README updates
+- **Custom Commands** - `/update-changelog` and `/update-readme` commands
+
+### GitHub Automation
+
+- **Continuous Integration** - Automated testing and building on multiple Node.js versions
+- **Auto-merge Dependabot** - Automatic dependency updates for minor/patch versions
+- **Code Coverage** - Integrated with Codecov for test coverage tracking
+- **Quality Checks** - ESLint, Prettier, and TypeScript checks on every commit
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -195,6 +227,7 @@ Please make sure to:
 - Follow the existing code style
 - Add tests for new features
 - Update documentation as needed
+- Follow the [Contributing Guidelines](CONTRIBUTING.md) for detailed instructions
 
 ## 📄 License
 
@@ -204,4 +237,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Next.js](https://nextjs.org/) for the amazing framework
 - [Vercel](https://vercel.com/) for hosting and deployment
+- [Claude Code](https://claude.ai/code) for AI-powered development assistance
+- [GitHub Actions](https://github.com/features/actions) for CI/CD automation
 - All the open source contributors who make this possible
