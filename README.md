@@ -31,7 +31,7 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 
 ## 📋 Prerequisites
 
-- Node.js 18.x or later
+- Node.js 18.x or later (tested with Node.js 18.x and 20.x)
 - npm, yarn, or pnpm
 
 ## 🛠️ Installation
