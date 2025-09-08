@@ -6,6 +6,7 @@ on:
 
 jobs:
   claude-auto-review:
+    if: github.actor != 'dependabot[bot]' && github.actor != 'claude[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
