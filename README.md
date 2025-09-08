@@ -18,15 +18,16 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 
 ### Technical Stack
 
-- ⚡ **Next.js 15** with App Router
+- ⚡ **Next.js 15.5** with App Router
 - ⚛️ **React 19.1** with modern features
-- 🎯 **TypeScript** with strict configuration
-- 🎨 **Tailwind CSS** for styling
-- 🧪 **Jest** and **React Testing Library** for testing
-- 📏 **ESLint** and **Prettier** for code quality
-- 🔄 **GitHub Actions** CI/CD pipeline
-- 🎣 **Husky** pre-commit hooks
+- 🎯 **TypeScript 5** with strict configuration
+- 🎨 **Tailwind CSS 4** for styling
+- 🧪 **Jest 30** and **React Testing Library 16** for testing
+- 📏 **ESLint 9** and **Prettier 3.6** for code quality
+- 🔄 **GitHub Actions** CI/CD pipeline with automated workflows
+- 🎣 **Husky 9** pre-commit hooks with lint-staged
 - 📦 **Automatic dependency updates** with Dependabot
+- 🤖 **Claude Code** integration for AI-assisted development
 
 ## 📋 Prerequisites
 
@@ -138,6 +139,21 @@ npm run test:coverage
 ├── tailwind.config.ts # Tailwind CSS configuration
 └── tsconfig.json      # TypeScript configuration
 ```
+
+## 🤖 Claude Code Integration
+
+This project includes comprehensive Claude Code integration with:
+
+- **Project Instructions** - Detailed guidance in `CLAUDE.md` for AI-assisted development
+- **Automated Workflows** - GitHub Actions workflows for changelog and README updates
+- **Development Commands** - Pre-configured scripts for common development tasks
+- **Code Quality Standards** - Strict TypeScript, ESLint, and Prettier configurations
+
+### Available Claude Code Commands
+
+- `/update-readme` - Updates README.md based on recent changes
+- `/update-changelog` - Generates changelog from git history
+- Custom workflows with GitHub CLI permissions for automated PR creation
 
 ## 🔧 Configuration
 
