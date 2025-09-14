@@ -25,9 +25,11 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 - 🎨 **Tailwind CSS v4** for styling
 - 🧪 **Jest** and **React Testing Library** for testing
 - 📏 **ESLint** and **Prettier** for code quality
-- 🔄 **GitHub Actions** CI/CD pipeline
-- 🎣 **Husky** pre-commit hooks
+- 🔄 **GitHub Actions** CI/CD pipeline with automated workflows
+- 🎣 **Husky** pre-commit hooks for code quality
 - 📦 **Automatic dependency updates** with Dependabot
+- 📋 **Changelog automation** with automatic version tracking
+- 🤖 **Claude Code commands** for streamlined development
 
 ## 📋 Prerequisites
 
@@ -113,7 +115,10 @@ npm run test:coverage
 ## 📁 Project Structure
 
 ```
+├── .claude/           # Claude Code commands and configuration
 ├── .github/           # GitHub workflows and dependabot config
+│   └── workflows/     # CI/CD workflows (auto-merge, changelog, etc.)
+├── .husky/            # Git hooks configuration
 ├── .next/             # Next.js build output
 ├── public/            # Static assets
 ├── src/
@@ -128,15 +133,17 @@ npm run test:coverage
 │   ├── types/         # TypeScript definitions
 │   │   └── chat.ts
 │   └── __tests__/     # Test files
+├── CHANGELOG.md       # Project changelog
+├── CLAUDE.md          # Claude Code project instructions
+├── CONTRIBUTING.md    # Contribution guidelines
 ├── .editorconfig      # Editor configuration
 ├── .env.example       # Environment variables template
-├── CLAUDE.md          # Claude Code project instructions
 ├── eslint.config.mjs  # ESLint configuration
 ├── .gitignore         # Git ignore rules
-├── .prettierrc        # Prettier configuration
 ├── jest.config.js     # Jest configuration
 ├── next.config.ts     # Next.js configuration
 ├── package.json       # Dependencies and scripts
+├── .prettierrc        # Prettier configuration
 ├── tailwind.config.ts # Tailwind CSS configuration
 └── tsconfig.json      # TypeScript configuration
 ```
@@ -185,18 +192,25 @@ npm start
 
 ## 🤝 Contributing
 
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on how to get started.
+
+Quick steps:
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 Please make sure to:
 
 - Run `npm run lint` and `npm test` before committing
-- Follow the existing code style
+- Follow the existing code style and [conventional commits](https://conventionalcommits.org/)
 - Add tests for new features
 - Update documentation as needed
+- Check the [CHANGELOG.md](CHANGELOG.md) for recent changes
+
+For more detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## 📄 License
 
