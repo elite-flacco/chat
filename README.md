@@ -119,14 +119,18 @@ npm run test:coverage
 ├── src/
 │   ├── app/           # Next.js app directory
 │   │   ├── api/chat/  # Chat API route
+│   │   ├── layout.tsx # Root layout with theme provider
 │   │   └── page.tsx   # Main chat interface
 │   ├── components/    # React components
 │   │   ├── Chat.tsx
 │   │   ├── ModelSelector.tsx
 │   │   ├── ThemeToggle.tsx
 │   │   └── ToolSelector.tsx
+│   ├── styles/        # CSS and styling
+│   │   └── index.css  # Global styles with Tailwind v4 inline theme
 │   ├── types/         # TypeScript definitions
-│   │   └── chat.ts
+│   │   ├── chat.ts
+│   │   └── jest-dom.d.ts
 │   └── __tests__/     # Test files
 ├── .editorconfig      # Editor configuration
 ├── .env.example       # Environment variables template
@@ -137,7 +141,7 @@ npm run test:coverage
 ├── jest.config.js     # Jest configuration
 ├── next.config.ts     # Next.js configuration
 ├── package.json       # Dependencies and scripts
-├── tailwind.config.ts # Tailwind CSS configuration
+├── postcss.config.mjs # PostCSS configuration for Tailwind CSS
 └── tsconfig.json      # TypeScript configuration
 ```
 
