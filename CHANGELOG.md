@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-09-28
+
+### Changed
+
+- **Dependency Update** - Updated OpenAI SDK to version 5.22.0 via Dependabot for improved compatibility and latest features
+
+### Added
+
+- **Claude Code Integration** - Added comprehensive documentation and command support for Claude Code IDE integration
+- **Environment Configuration** - Added .env.example template for easier project setup
+- **Documentation** - Added CONTRIBUTING.md with detailed contribution guidelines
+
 ## [0.1.0] - 2025-09-08
 
 ### Added
