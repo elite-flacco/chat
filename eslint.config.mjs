@@ -1,4 +1,6 @@
 import nextConfig from 'eslint-config-next';
+import typescriptParser from '@typescript-eslint/parser';
+import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 
 const eslintConfig = [
   {
@@ -6,9 +8,22 @@ const eslintConfig = [
   },
   // Spread the Next.js config array since it exports multiple config objects
   ...nextConfig,
-  // Override with custom rules
+  // Override with custom rules and TypeScript configuration
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescriptPlugin,
+    },
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
