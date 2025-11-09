@@ -4,11 +4,12 @@ const eslintConfig = [
   {
     ignores: ['.next/**', 'out/**', 'node_modules/**', '.env*'],
   },
+  // Spread the Next.js config array since it exports multiple config objects
+  ...nextConfig,
+  // Override with custom rules
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    ...nextConfig,
     rules: {
-      ...nextConfig.rules,
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_' },
