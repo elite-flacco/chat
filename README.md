@@ -20,7 +20,7 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 ### Technical Stack
 
 - ⚡ **Next.js 15.5** with App Router
-- ⚛️ **React 19.1** with modern features
+- ⚛️ **React 19.2** with modern features
 - 🎯 **TypeScript** with strict configuration
 - 🎨 **Tailwind CSS v4** for styling
 - 🧪 **Jest** and **React Testing Library** for testing
