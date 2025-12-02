@@ -29,7 +29,7 @@ A modern AI chatbot application built with Next.js and TypeScript, supporting mu
 - 🎣 **Husky** pre-commit hooks for code quality
 - 📦 **Automatic dependency updates** with Dependabot
 - 📋 **Changelog automation** with automatic version tracking
-- 🤖 **Claude Code commands** for streamlined development
+- 🤖 **Claude Code commands** for streamlined development (`/update-changelog`, `/update-readme`)
 
 ## 📋 Prerequisites
 
@@ -116,8 +116,9 @@ npm run test:coverage
 
 ```
 ├── .claude/           # Claude Code commands and configuration
+│   └── commands/      # Custom slash commands (/update-changelog, /update-readme)
 ├── .github/           # GitHub workflows and dependabot config
-│   └── workflows/     # CI/CD workflows (auto-merge, changelog, etc.)
+│   └── workflows/     # CI/CD workflows (ci, auto-merge, changelogbot, cc-assistant, cc-auto-review)
 ├── .husky/            # Git hooks configuration
 ├── .next/             # Next.js build output
 ├── public/            # Static assets
