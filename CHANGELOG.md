@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-12-14
+
+### Changed
+
+- Updated README with specific Claude Code commands (`/update-changelog`, `/update-readme`)
+- Expanded project structure documentation to show `.claude/commands/` directory with available slash commands
+- Enhanced GitHub workflows documentation with complete list of available workflows (ci, auto-merge, changelogbot, cc-assistant, cc-auto-review)
+
 ## [0.1.1] - 2025-11-16
 
 ### Changed
